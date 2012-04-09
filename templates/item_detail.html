@@ -1,0 +1,9 @@
+
+
+<h3>Here's some {{ item_name }} things!</h3>
+
+<ul>
+  {% for key in item_dict %}
+  <li>{{ key }}: {{ item_dict[key] }} </li>
+  {% endfor %}
+</ul>

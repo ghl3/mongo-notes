@@ -1,0 +1,10 @@
+
+
+<h3>Here's some {{ collection_name }} things!</h3>
+
+<ul>
+  {% for item in collection_items %}
+  <li class="item_listing" id="{{ collection_name }}:{{ item._id }}">
+    {{ item.name }}</li>
+  {% endfor %}
+</ul>
