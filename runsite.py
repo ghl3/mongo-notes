@@ -17,6 +17,10 @@ def parse_item(intext):
         elif line.startswith('#'):
             words = line[1:].split()
             properties[words[0]] = ' '.join(words[1:])
+
+    if '_id' in properties:
+        properties['_id'] = ObjectId(properties['_id'])
+        
     return collection_name, properties
 
 
@@ -34,7 +38,7 @@ def add_item():
     try:
         collection_name, properties = parse_item(item_text)
         collection = db[collection_name]
-        collection.insert(properties)
+        collection.save(properties)
         return jsonify(result="add item %s succeeded" % properties)
     except:
         return jsonify(result="error")
