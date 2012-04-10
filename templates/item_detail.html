@@ -1,10 +1,11 @@
 
 
-<h3>Here's some {{ item_name }} things!</h3>
+<h3>Here's some {{ item_dict.name }} things!</h3>
 
 <ul>
   {% for key in item_dict %}
   <li>{{ key }}: {{ item_dict[key] }} </li>
   {% endfor %}
 </ul>
-<a href="#" class="edit_item">edit</a>
+<a href="#" class="edit_item" id="{{ collection_name }}:{{ item_dict._id }}">edit</a>
+

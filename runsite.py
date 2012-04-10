@@ -54,8 +54,26 @@ def get_item_detail():
         collection_name, _id = item_id
         collection = db[collection_name]
         item = collection.find_one({'_id': ObjectId(_id)})
-        result = render_template("item_detail.html", item_dict=item)
-        return jsonify(result=result, item_id=item_id)
+        result = render_template("item_detail.html",
+                                 item_dict=item,
+                                 collection_name=collection_name)
+        return jsonify(result=result)
+    except:
+        return jsonify(result="error")
+
+
+@app.route('/_get_item_card')
+def get_item_card():
+    try:
+        item_id = request.args.get('item_id', type=str).split(':')
+        collection_name, _id = item_id
+        collection = db[collection_name]
+        item = collection.find_one({'_id': ObjectId(_id)})
+        print item
+        result = render_template("item_card.txt",
+                                 item_dict=item,
+                                 collection_name=collection_name)
+        return jsonify(result=result)
     except:
         return jsonify(result="error")
 

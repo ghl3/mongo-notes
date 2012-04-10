@@ -54,7 +54,13 @@
     });
 
     $("a.edit_item").live("click", function() {
-	$("#main_input").text("here!");
+	$.getJSON($SCRIPT_ROOT + '/_get_item_card', {
+	    item_id: this.id
+	},
+                  function(data) {
+		      currentlyLoadedObject = 
+                      $("#main_input").text(data.result);
+                  });
     });
 
 }
