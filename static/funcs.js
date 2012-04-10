@@ -1,5 +1,7 @@
 
 {
+    var currentlyLoadedObject = ""
+
     $(function() {
         $('a#add_item').bind('click', function() {
             $.getJSON($SCRIPT_ROOT + '/_add_item', {
@@ -22,6 +24,16 @@
         });
     });
 
+    $(function() {
+        $('a#clear_db').bind('click', function() {
+            $.getJSON($SCRIPT_ROOT + '/_clear_db', { },
+                      function(data) {
+                          $("#result").html(data.result);
+                      });
+            return false;
+        });
+    });
+
     $("li.collection_heading").live("click", function() {
         $.getJSON($SCRIPT_ROOT + '/_get_items', {
 	    collection_name: this.innerText
@@ -36,8 +48,13 @@
 	    item_id: this.id
 	},
                   function(data) {
+		      currentlyLoadedObject = 
                       $("#result").html(data.result);
                   });
+    });
+
+    $("a.edit_item").live("click", function() {
+	$("#main_input").text("here!");
     });
 
 }
