@@ -1,13 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-    jQuery Example
-    ~~~~~~~~~~~~~~
-
-    A simple application that shows how Flask and jQuery get along.
-
-    :copyright: (c) 2010 by Armin Ronacher.
-    :license: BSD, see LICENSE for more details.
-"""
 
 from flask import Flask, jsonify, render_template, request
 from bson.objectid import ObjectId
@@ -19,26 +9,28 @@ connect = pymongo.Connection()
 db = connect.my_db
 
 
-for name in db.collection_names():
-    if name != 'system.indexes':
-        pass
-#        db.drop_collection(name)
-
-
 def parse_item(intext):
     properties = { }
     for line in intext.split('\n'):
         if line.startswith('@'):
             collection_name, properties['name'] = line[1:].split()
         elif line.startswith('#'):
-            key, val = line[1:].split(':')
-            properties[key.strip()] = val.strip()
+            words = line[1:].split()
+            properties[words[0]] = ' '.join(words[1:])
     return collection_name, properties
+
+
+@app.route('/_clear_db')
+def clear_db():
+    for name in db.collection_names():
+        if name != 'system.indexes':
+            db.drop_collection(name)
+    return jsonify(result="database cleared")
 
 
 @app.route('/_add_item')
 def add_item():
-    item_text = request.args.get('item_name', 'no_name', type=str)
+    item_text = request.args.get('item_name', type=str)
     try:
         collection_name, properties = parse_item(item_text)
         collection = db[collection_name]
@@ -58,18 +50,19 @@ def get_collections():
 @app.route('/_get_item_detail')
 def get_item_detail():
     try:
-        collection_name, _id = request.args.get('item_id', 'none', type=str).split(':')
+        item_id = request.args.get('item_id', type=str).split(':')
+        collection_name, _id = item_id
         collection = db[collection_name]
-        result = render_template("item_detail.html",
-                                 item_dict=collection.find_one({'_id': ObjectId(_id)}))
-        return jsonify(result=result)
+        item = collection.find_one({'_id': ObjectId(_id)})
+        result = render_template("item_detail.html", item_dict=item)
+        return jsonify(result=result, item_id=item_id)
     except:
         return jsonify(result="error")
 
 
 @app.route('/_get_items')
 def get_items():
-    key = request.args.get('collection_name', 'none', type=str)
+    key = request.args.get('collection_name', type=str)
     if key not in db.collection_names():
         return jsonify(result="%s is not a collection" % key)
     try:
@@ -81,7 +74,6 @@ def get_items():
                              collection_items=x,
                              collection_name=key)
     return jsonify(result=result)
-
 
 
 @app.route('/')
