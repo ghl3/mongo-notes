@@ -4,7 +4,7 @@
 
 <ul>
   {% for item in collection_items %}
-  <li class="item_listing" id="{{ collection_name }}:{{ item._id }}">
-    {{ item.name }}</li>
+  <a href="#"><li class="item_listing" id="{{ collection_name }}:{{ item._id }}">
+    {{ item.name }}</li></a>
   {% endfor %}
 </ul>

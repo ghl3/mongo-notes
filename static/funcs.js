@@ -13,19 +13,19 @@
     });
 
     $("a.edit_item").live("click", function() {
-	$.getJSON($SCRIPT_ROOT + '/_get_item_card', {
-	    item_id: this.id
-	},
+        $.getJSON($SCRIPT_ROOT + '/_get_item_card', {
+            item_id: this.id
+        },
                   function(data) {
                       $("#main_input").val(data.result);
                   });
     });
 
     $("a.rm_item").live("click", function() {
-	alert("removing " + this.id)
-	$.getJSON($SCRIPT_ROOT + '/_rm_item', {
-	    item_id: this.id
-	},
+        alert("removing " + this.id)
+        $.getJSON($SCRIPT_ROOT + '/_rm_item', {
+            item_id: this.id
+        },
                   function(data) {
                       $("#result").html(data.result);
                   });
@@ -53,8 +53,8 @@
 
     $("li.collection_heading").live("click", function() {
         $.getJSON($SCRIPT_ROOT + '/_get_items', {
-	    collection_name: this.innerText
-	},
+            collection_name: this.innerText
+        },
                   function(data) {
                       $("#result").html(data.result);
                   });
@@ -62,10 +62,11 @@
 
     $("li.item_listing").live("click", function() {
         $.getJSON($SCRIPT_ROOT + '/_get_item_detail', {
-	    item_id: this.id
-	},
+            item_id: this.id
+        },
                   function(data) {
                       $("#result").html(data.result);
                   });
     });
 }
+
