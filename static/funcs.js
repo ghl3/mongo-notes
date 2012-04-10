@@ -14,6 +14,16 @@
         });
     });
 
+    $("a.edit_item").live("click", function() {
+	$.getJSON($SCRIPT_ROOT + '/_get_item_card', {
+	    item_id: this.id
+	},
+                  function(data) {
+		      currentlyLoadedObject = 
+                      $("#main_input").val(data.result);
+                  });
+    });
+
     $(function() {
         $('a#get_collections').bind('click', function() {
             $.getJSON($SCRIPT_ROOT + '/_get_collections', { },
@@ -52,16 +62,4 @@
                       $("#result").html(data.result);
                   });
     });
-
-    $("a.edit_item").live("click", function() {
-
-	$.getJSON($SCRIPT_ROOT + '/_get_item_card', {
-	    item_id: this.id
-	},
-                  function(data) {
-		      currentlyLoadedObject = 
-                      $("#main_input").val(data.result);
-                  });
-    });
-
 }

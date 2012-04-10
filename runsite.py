@@ -69,7 +69,6 @@ def get_item_card():
         collection_name, _id = item_id
         collection = db[collection_name]
         item = collection.find_one({'_id': ObjectId(_id)})
-        print item
         result = render_template("item_card.txt",
                                  item_dict=item,
                                  collection_name=collection_name)

@@ -1,5 +1,5 @@
 
 @{{ collection_name }} {{ item_dict.name }}
-{% for key in item_dict %}
+{% for key in item_dict if key != 'name' %}
 #{{ key }} {{ item_dict[key] }}
 {% endfor %}
