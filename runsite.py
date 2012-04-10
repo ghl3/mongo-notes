@@ -20,7 +20,7 @@ def parse_item(intext):
 
     if '_id' in properties:
         properties['_id'] = ObjectId(properties['_id'])
-        
+
     return collection_name, properties
 
 
@@ -30,6 +30,13 @@ def clear_db():
         if name != 'system.indexes':
             db.drop_collection(name)
     return jsonify(result="database cleared")
+
+
+@app.route('/_get_collections')
+def get_collections():
+    x = [n for n in db.collection_names() if n != 'system.indexes']
+    result = render_template("collections.html", collections=x)
+    return jsonify(result=result)
 
 
 @app.route('/_add_item')
@@ -44,11 +51,16 @@ def add_item():
         return jsonify(result="error")
 
 
-@app.route('/_get_collections')
-def get_collections():
-    x = [n for n in db.collection_names() if n != 'system.indexes']
-    result = render_template("collections.html", collections=x)
-    return jsonify(result=result)
+@app.route('/_rm_item')
+def rm_item():
+    try:
+        item_id = request.args.get('item_id', type=str).split(':')
+        collection_name, _id = item_id
+        collection = db[collection_name]
+        collection.remove({'_id': ObjectId(_id)})
+        return jsonify(result="remove item %s succeeded" % _id)
+    except:
+        return jsonify(result="error")
 
 
 @app.route('/_get_item_detail')

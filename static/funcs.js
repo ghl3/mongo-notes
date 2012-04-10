@@ -1,7 +1,5 @@
 
 {
-    var currentlyLoadedObject = ""
-
     $(function() {
         $('a#add_item').bind('click', function() {
             $.getJSON($SCRIPT_ROOT + '/_add_item', {
@@ -19,8 +17,17 @@
 	    item_id: this.id
 	},
                   function(data) {
-		      currentlyLoadedObject = 
                       $("#main_input").val(data.result);
+                  });
+    });
+
+    $("a.rm_item").live("click", function() {
+	alert("removing " + this.id)
+	$.getJSON($SCRIPT_ROOT + '/_rm_item', {
+	    item_id: this.id
+	},
+                  function(data) {
+                      $("#result").html(data.result);
                   });
     });
 
@@ -58,7 +65,6 @@
 	    item_id: this.id
 	},
                   function(data) {
-		      currentlyLoadedObject = 
                       $("#result").html(data.result);
                   });
     });
