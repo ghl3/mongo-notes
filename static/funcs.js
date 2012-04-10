@@ -5,7 +5,7 @@
     $(function() {
         $('a#add_item').bind('click', function() {
             $.getJSON($SCRIPT_ROOT + '/_add_item', {
-                item_name: $('textarea[name="item_name"]').val()
+                item_name: $("#main_input").val()
             },
                       function(data) {
                           $("#result").text(data.result);
@@ -54,12 +54,13 @@
     });
 
     $("a.edit_item").live("click", function() {
+
 	$.getJSON($SCRIPT_ROOT + '/_get_item_card', {
 	    item_id: this.id
 	},
                   function(data) {
 		      currentlyLoadedObject = 
-                      $("#main_input").text(data.result);
+                      $("#main_input").val(data.result);
                   });
     });
 
